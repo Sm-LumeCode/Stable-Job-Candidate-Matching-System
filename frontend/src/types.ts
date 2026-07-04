@@ -1,0 +1,4 @@
+export interface Candidate { id: number; candidate_id: string; name: string; email?: string; phone?: string; skills: string; experience_years: number; desired_role: string; desired_salary?: number; preferred_location: string; education: string; resume_filename?: string; resume_text: string; }
+export interface Job { id: number; job_id: string; title: string; company_name: string; required_skills: string; min_experience_years: number; offered_salary?: number; location: string; capacity: number; description: string; }
+export interface Skill { id: number; skill_term: string; canonical_skill: string; category: string; }
+export interface DatabaseStatus { database: string; total_jobs: number; total_companies: number; total_capacity: number; total_skills: number; total_candidates: number; setup_complete: boolean; }
