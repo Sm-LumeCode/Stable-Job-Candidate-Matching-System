@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import DatabaseStatus from "./pages/DatabaseStatus";
 import ExactMatching from "./pages/ExactMatching";
 import Benchmark from "./pages/Benchmark";
+import StableMatching from "./pages/StableMatching";
 
 // Recruiter pages
 import RecruiterDashboard from "./pages/RecruiterDashboard";
@@ -59,6 +60,7 @@ function AppShell() {
             <Route path="/settings" element={<ProtectedRoute allowedRoles={["admin"]}><Settings /></ProtectedRoute>} />
             <Route path="/matching" element={<ProtectedRoute allowedRoles={["admin"]}><ExactMatching /></ProtectedRoute>} />
             <Route path="/benchmark" element={<ProtectedRoute allowedRoles={["admin"]}><Benchmark /></ProtectedRoute>} />
+            <Route path="/stable-matching" element={<ProtectedRoute allowedRoles={["admin"]}><StableMatching /></ProtectedRoute>} />
 
             {/* Recruiter routes */}
             <Route path="/recruiter" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterDashboard /></ProtectedRoute>} />

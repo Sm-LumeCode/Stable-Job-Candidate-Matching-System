@@ -64,3 +64,19 @@ class SettingsResponse(BaseModel):
     groq_model: str
     api_key_configured: bool
     model_config = ConfigDict(from_attributes=True)
+
+
+class CandidatePreference(BaseModel):
+    candidate_id: str
+    preferences: list[str]
+
+
+class JobPreference(BaseModel):
+    job_id: str
+    capacity: int = Field(ge=1)
+    preferences: list[str]
+
+
+class StableMatchingPayload(BaseModel):
+    candidates: list[CandidatePreference]
+    jobs: list[JobPreference]

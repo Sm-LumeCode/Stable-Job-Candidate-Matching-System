@@ -12,6 +12,7 @@ const ADMIN_LINKS = [
   ["/skills", "Skill Taxonomy", Tags],
   ["/matching", "Exact Matching", Sparkles],
   ["/benchmark", "BMH Benchmark", Database],
+  ["/stable-matching", "Stable Matching", Sparkles],
   ["/database", "Database", Database],
   ["/settings", "Settings", Settings],
 ] as const;
