@@ -15,6 +15,8 @@ class JobPayload(BaseModel):
 
 class JobResponse(JobPayload):
     id: int
+    normalized_required_skills: str = ""
+    recruiter_id: int | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -51,4 +53,14 @@ class CandidatePayload(BaseModel):
 class CandidateResponse(CandidatePayload):
     id: int
     candidate_id: str
+    normalized_skills: str = ""
+    ai_skills: str = ""
+    ai_extraction_metadata: str = "[]"
+    model_config = ConfigDict(from_attributes=True)
+
+
+class SettingsResponse(BaseModel):
+    ai_parsing_enabled: bool
+    groq_model: str
+    api_key_configured: bool
     model_config = ConfigDict(from_attributes=True)

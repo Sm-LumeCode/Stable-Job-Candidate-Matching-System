@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from models import Job, SkillTaxonomy
+from services.preprocessing import normalize_skills
 
 
 JOB_COLUMNS = {"job_id", "company_name", "title", "required_skills", "min_experience_years", "offered_salary", "location", "capacity"}
@@ -18,9 +19,13 @@ def import_jobs(db: Session, rows: list[dict[str, str]]) -> int:
     for row in rows:
         if not row.get("job_id") or not row.get("title") or not row.get("company_name"):
             continue
+        raw_skills = row.get("required_skills", "").strip()
+        original_skills, normalized = normalize_skills(raw_skills, db)
         values = dict(
             job_id=row["job_id"].strip(), title=row["title"].strip(),
-            company_name=row["company_name"].strip(), required_skills=row.get("required_skills", "").strip(),
+            company_name=row["company_name"].strip(),
+            required_skills=original_skills,
+            normalized_required_skills=normalized,
             min_experience_years=_number(row.get("min_experience_years")),
             offered_salary=_number(row.get("offered_salary"), None),
             location=row.get("location", "").strip(), capacity=_number(row.get("capacity"), 1, int),

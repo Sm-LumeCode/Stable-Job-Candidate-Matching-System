@@ -4,16 +4,21 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Candidate, Job, SkillTaxonomy
+from models.user import User
 from services.upload_service import import_jobs, import_skills
 from utils.csv_parser import parse_csv
 from fastapi import UploadFile
+from auth import require_admin
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 DATASETS = Path(__file__).resolve().parents[2] / "datasets"
 
 
 @router.get("/status")
-def database_status(db: Session = Depends(get_db)):
+def database_status(
+    _: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
     total_jobs = db.query(func.count(Job.id)).scalar() or 0
     return {
         "database": "connected",
@@ -27,7 +32,10 @@ def database_status(db: Session = Depends(get_db)):
 
 
 @router.post("/load-sample-data")
-async def load_sample_data(db: Session = Depends(get_db)):
+async def load_sample_data(
+    _: User = Depends(require_admin),
+    db: Session = Depends(get_db),
+):
     jobs_path, skills_path = DATASETS / "jobs.csv", DATASETS / "skills_taxonomy.csv"
     if not jobs_path.exists() or not skills_path.exists():
         raise HTTPException(404, "Sample datasets are missing")
