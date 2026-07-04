@@ -10,6 +10,8 @@ const ADMIN_LINKS = [
   ["/", "Dashboard", Gauge],
   ["/jobs", "Job Management", BriefcaseBusiness],
   ["/skills", "Skill Taxonomy", Tags],
+  ["/matching", "Exact Matching", Sparkles],
+  ["/benchmark", "BMH Benchmark", Database],
   ["/database", "Database", Database],
   ["/settings", "Settings", Settings],
 ] as const;
