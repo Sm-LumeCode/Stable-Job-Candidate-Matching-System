@@ -1,0 +1,177 @@
+skill_term,canonical_skill,category
+Python programming,Python,Programming
+Python,Python,Programming
+Python coding,Python,Programming
+ML,Machine Learning,Data/AI
+Machine Learning,Machine Learning,Data/AI
+machine-learning,Machine Learning,Data/AI
+ML models,Machine Learning,Data/AI
+scikit-learn,Machine Learning,Data/AI
+Deep learning,Deep Learning,Data/AI
+Deep Learning experience,Deep Learning,Data/AI
+deep neural networks,Deep Learning,Data/AI
+PyTorch,Deep Learning,Data/AI
+TensorFlow,Deep Learning,Data/AI
+NLP,Natural Language Processing,Data/AI
+Natural Language Processing,Natural Language Processing,Data/AI
+Transformers,Natural Language Processing,Data/AI
+text analytics,Natural Language Processing,Data/AI
+computer vision,Computer Vision,Data/AI
+Computer Vision,Computer Vision,Data/AI
+OpenCV,Computer Vision,Data/AI
+SQL,SQL,Data
+SQL queries,SQL,Data
+SQL reporting,SQL,Data
+MySQL,SQL,Data
+Mongo DB,MongoDB,Data
+MongoDB,MongoDB,Data
+PostgreSQL,PostgreSQL,Data
+Postgres,PostgreSQL,Data
+SQL Server,SQL Server,Data
+pandas,Data Analysis,Data
+NumPy,Data Analysis,Data
+data cleaning,Data Analysis,Data
+data analysis,Data Analysis,Data
+statistical analysis,Statistics,Data
+statistical modeling,Statistics,Data
+R programming,R,Programming
+R,R,Programming
+Excel modeling,Excel,Data
+Excel spreadsheets,Excel,Data
+Excel,Excel,Data
+Tableau,Data Visualization,Data
+Power BI,Business Intelligence,Data
+PowerBI,Business Intelligence,Data
+business intelligence,Business Intelligence,Data
+data visualization,Data Visualization,Data
+data storytelling,Data Visualization,Data
+business analytics,Business Analysis,Business
+product analytics,Product Analytics,Business
+A/B testing,Experimentation,Business
+customer insights,Business Analysis,Business
+data pipelines,Data Engineering,Data
+ETL pipelines,Data Engineering,Data
+ETL,Data Engineering,Data
+Apache Spark,Apache Spark,Data
+data warehousing,Data Warehousing,Data
+cloud data platforms,Cloud Data Platform,Cloud/DevOps
+dbt,Data Transformation,Data
+Java development,Java,Programming
+Java,Java,Programming
+Spring Boot,Spring,Programming
+Spring framework,Spring,Programming
+C#,C Sharp,Programming
+.NET Core,.NET,Programming
+.NET,.NET,Programming
+C++,C++,Programming
+Go programming,Go,Programming
+Golang,Go,Programming
+Rust programming,Rust,Programming
+Ruby,Ruby,Programming
+Ruby on Rails,Ruby on Rails,Programming
+PHP,PHP,Programming
+Laravel,Laravel,Programming
+JavaScript,JavaScript,Programming
+Javascript,JavaScript,Programming
+TypeScript,TypeScript,Programming
+Typescript,TypeScript,Programming
+Node.js,Node.js,Programming
+Express.js,Node.js,Programming
+React,React,Frontend
+React.js,React,Frontend
+Vue.js,Vue,Frontend
+HTML5,HTML,Frontend
+HTML/CSS,HTML and CSS,Frontend
+CSS,CSS,Frontend
+CSS3,CSS,Frontend
+user interface design,UI Design,Design
+UI design,UI Design,Design
+user experience,UX Design,Design
+Figma,Figma,Design
+Figma design,Figma,Design
+UX research,User Research,Design
+user research,User Research,Design
+wireframing,Wireframing,Design
+prototyping,Prototyping,Design
+prototypes,Prototyping,Design
+design systems,Design Systems,Design
+mobile UI,Mobile Development,Mobile
+mobile apps,Mobile Development,Mobile
+iOS development,iOS Development,Mobile
+Swift programming,Swift,Mobile
+Android development,Android Development,Mobile
+Kotlin,Kotlin,Mobile
+React Native,React Native,Mobile
+REST APIs,REST API,Backend
+REST API,REST API,Backend
+RESTful services,REST API,Backend
+API development,REST API,Backend
+web APIs,REST API,Backend
+microservices,Microservices,Backend
+micro-services,Microservices,Backend
+distributed systems,Distributed Systems,Backend
+test automation,Test Automation,Quality
+quality assurance,Quality Assurance,Quality
+Selenium,Selenium,Quality
+API testing,API Testing,Quality
+Git,Git,Development Tools
+GitHub,Git,Development Tools
+Git version control,Git,Development Tools
+AWS cloud,AWS,Cloud/DevOps
+AWS, AWS,Cloud/DevOps
+Amazon Web Services,AWS,Cloud/DevOps
+Azure cloud,Azure,Cloud/DevOps
+Microsoft Azure,Azure,Cloud/DevOps
+Docker,Docker,Cloud/DevOps
+Docker containers,Docker,Cloud/DevOps
+Kubernetes,Kubernetes,Cloud/DevOps
+K8s,Kubernetes,Cloud/DevOps
+Kubernetes clusters,Kubernetes,Cloud/DevOps
+container orchestration,Kubernetes,Cloud/DevOps
+CI/CD pipelines,CI/CD,Cloud/DevOps
+CI-CD,CI/CD,Cloud/DevOps
+Terraform,Terraform,Cloud/DevOps
+DevOps,DevOps,Cloud/DevOps
+Linux,Linux,Cloud/DevOps
+Linux admin,Linux,Cloud/DevOps
+serverless,Serverless,Cloud/DevOps
+Lambda functions,Serverless,Cloud/DevOps
+cyber security,Cybersecurity,Security
+cybersecurity,Cybersecurity,Security
+network security,Network Security,Security
+networking,Networking,Security
+cloud security,Cloud Security,Security
+SIEM tools,SIEM,Security
+SIEM,SIEM,Security
+incident response,Incident Response,Security
+incident management,Incident Response,Security
+embedded systems,Embedded Systems,Engineering
+systems programming,Systems Programming,Engineering
+sensor integration,Embedded Systems,Engineering
+Salesforce,Salesforce,Enterprise
+Apex programming,Salesforce Development,Enterprise
+CRM workflows,CRM,Enterprise
+product strategy,Product Management,Business
+roadmapping,Product Roadmapping,Business
+roadmap planning,Product Roadmapping,Business
+project management,Project Management,Soft Skills
+project delivery,Project Management,Soft Skills
+Scrum,Scrum,Soft Skills
+Scrum master,Scrum,Soft Skills
+Agile,Agile,Soft Skills
+Agile methodology,Agile,Soft Skills
+Agile teamwork,Agile,Soft Skills
+stakeholder management,Stakeholder Management,Soft Skills
+stakeholder communication,Stakeholder Management,Soft Skills
+risk management,Risk Management,Soft Skills
+leadership,Leadership,Soft Skills
+Leadership,Leadership,Soft Skills
+team leadership,Leadership,Soft Skills
+team collaboration,Collaboration,Soft Skills
+recruiting analytics,People Analytics,Business
+people operations,People Operations,Business
+technical writing,Technical Writing,Communication
+report writing,Technical Writing,Communication
+API documentation,Technical Documentation,Communication
+software development lifecycle,Software Development Lifecycle,Development Tools
+database tuning,Database Administration,Data

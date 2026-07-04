@@ -1,0 +1,21 @@
+job_id,company_name,title,required_skills,min_experience_years,offered_salary,location,capacity
+J001,Northstar Analytics,Data Scientist,"Machine Learning,Python,SQL,statistical analysis",2,125000,Austin,2
+J002,BluePeak Systems,Backend Software Engineer,"Java,Spring framework,REST API,Postgres,Docker",4,145000,Seattle,2
+J003,PixelForge Labs,Front-End Engineer,"React,Typescript,HTML/CSS,UI design",2,120000,New York,2
+J004,Quantum Grove AI,Machine Learning Engineer,"Deep Learning experience,PyTorch,Python,Natural Language Processing",4,165000,San Francisco,2
+J005,LedgerView Partners,Business Data Analyst,"SQL reporting,Excel,Tableau,business analytics",1,90000,Chicago,2
+J006,CloudHarbor Tech,DevOps Engineer,"Amazon Web Services,container orchestration,CI-CD,Linux,Terraform",5,158000,Remote,2
+J007,Orbit Product Co,Senior Product Manager,"product strategy,roadmap planning,stakeholder communication,Agile methodology,Leadership",6,170000,Boston,1
+J008,Cedar Stack,Full Stack Developer,"Node.js,React.js,Javascript,MongoDB,web APIs",3,138000,Denver,2
+J009,Vista Vision Robotics,Computer Vision ML Engineer,"Computer Vision,TensorFlow,OpenCV,deep neural networks",4,168000,San Francisco,1
+J010,IronGate Security,Security Operations Engineer,"cybersecurity,SIEM,incident management,network security",4,148000,Washington DC,2
+J011,Hearthside Digital,Product UX Designer,"Figma design,user research,wireframing,design systems",3,118000,Portland,1
+J012,MetroSoft Solutions,.NET Application Engineer,"C#,.NET,Microsoft Azure,SQL Server,RESTful services",5,150000,Chicago,1
+J013,StrataFlow Data,Data Platform Engineer,"ETL,Apache Spark,data warehousing,Python,cloud data platforms",5,162000,Seattle,2
+J014,Beacon Reliability,Site Reliability Engineer,"Golang,K8s,micro-services,Docker containers,Linux admin",6,175000,Seattle,1
+J015,Insight Arc,BI & Reporting Analyst,"PowerBI,SQL queries,data visualization,Excel modeling",2,105000,Dallas,2
+J016,MobileMint Studio,Mobile Software Engineer,"mobile apps,Swift programming,Kotlin,REST API",3,140000,Austin,2
+J017,AssureWave,QA Automation Engineer,"Selenium,quality assurance,test automation,API testing",3,120000,Dallas,1
+J018,Evergreen Cloud,Cloud Infrastructure Engineer,"AWS cloud,serverless,Terraform,Kubernetes clusters,DevOps",4,160000,Remote,2
+J019,SignalText AI,NLP Research Engineer,"Transformers,text analytics,PyTorch,Machine Learning,Python coding",5,172000,New York,1
+J020,Prism Commerce,Web Application Developer,"PHP,Laravel,MySQL,JavaScript,CSS3",3,125000,Miami,2

@@ -1,0 +1,51 @@
+candidate_id,name,skills,experience_years,desired_role,desired_salary,preferred_location,education
+C001,Maya Patel,"Python programming,ML,SQL queries,pandas,team collaboration",3,Data Scientist,98000,Austin,MS Data Science
+C002,Ethan Brooks,"Java development,Spring Boot,REST APIs,PostgreSQL,Docker",5,Backend Developer,125000,Seattle,BS Computer Science
+C003,Sofia Ramirez,"React.js,TypeScript,CSS3,user interface design,Agile teamwork",4,Frontend Engineer,112000,New York,BFA Interaction Design
+C004,Liam Chen,"PyTorch,Python,Deep learning,NLP,Git",6,Machine Learning Engineer,148000,San Francisco,MS Artificial Intelligence
+C005,Aisha Thompson,"Excel modeling,SQL,Tableau,data visualization,business analytics",2,Data Analyst,78000,Chicago,BS Economics
+C006,Noah Williams,"AWS cloud,Docker containers,Kubernetes,CI/CD pipelines,Linux admin",7,DevOps Engineer,145000,Remote,BS Information Systems
+C007,Priya Nair,"product strategy,stakeholder management,roadmapping,Agile,team leadership",8,Product Manager,155000,Boston,MBA
+C008,Lucas Martin,"Node.js,JavaScript,Express.js,Mongo DB,API development",4,Full Stack Developer,118000,Denver,BS Software Engineering
+C009,Grace Kim,"TensorFlow,Machine Learning,Python programming,computer vision,NumPy",5,ML Engineer,142000,San Francisco,MS Computer Engineering
+C010,Daniel Okafor,"cyber security,network security,SIEM tools,incident response,Python",6,Security Engineer,137000,Washington DC,BS Cybersecurity
+C011,Olivia Jensen,"Figma,UX research,wireframing,prototyping,user interface design",3,UX Designer,95000,Portland,BA Graphic Design
+C012,Arjun Mehta,"C#,.NET Core,SQL Server,RESTful services,Azure cloud",9,Senior Software Engineer,158000,Chicago,BS Computer Science
+C013,Chloe Dubois,"R programming,statistical analysis,SQL queries,Tableau,report writing",4,Data Analyst,92000,Boston,MS Statistics
+C014,Marcus Reed,"Go programming,microservices,Kubernetes,Docker,Postgres",6,Platform Engineer,150000,Seattle,BS Computer Science
+C015,Elena Petrova,"Java,Spring framework,distributed systems,REST API,Git version control",8,Backend Engineer,154000,New York,MS Software Engineering
+C016,Samuel Lee,"React,Javascript,HTML5,CSS,user experience",2,Front End Developer,85000,Austin,Associate Degree Web Development
+C017,Fatima Zahra,"Power BI,Excel,SQL,business intelligence,data storytelling",5,Business Intelligence Analyst,105000,Dallas,BS Business Analytics
+C018,Henry Wilson,"Amazon Web Services,Terraform,container orchestration,DevOps,Linux",8,Cloud Engineer,160000,Remote,BS Network Engineering
+C019,Nina Singh,"scikit-learn,ML models,Python,pandas,data cleaning",3,Junior Data Scientist,90000,Atlanta,MS Applied Mathematics
+C020,Jack Murphy,"project management,Scrum,stakeholder communication,risk management,leadership",10,Technical Program Manager,165000,Seattle,PMP and BS Engineering
+C021,Zoe Carter,"Vue.js,TypeScript,HTML/CSS,REST APIs,Git",3,Frontend Developer,100000,Denver,BS Computer Science
+C022,Ahmed Hassan,"Natural Language Processing,Transformers,PyTorch,Python coding,deep neural networks",7,NLP Engineer,162000,New York,PhD Computational Linguistics
+C023,Isabella Rossi,"MySQL,SQL reporting,Excel spreadsheets,PowerBI,data analysis",1,Data Analyst,70000,Miami,BS Finance
+C024,Benjamin Clark,"Ruby on Rails,Ruby,PostgreSQL,web APIs,test automation",5,Backend Developer,128000,Remote,BS Information Technology
+C025,Mei Tanaka,"iOS development,Swift programming,mobile UI,REST API,GitHub",4,iOS Engineer,130000,San Francisco,BS Computer Science
+C026,Owen Taylor,"Android development,Kotlin,Java development,mobile apps,RESTful services",4,Android Developer,126000,Austin,BS Software Engineering
+C027,Leila Haddad,"recruiting analytics,people operations,Excel modeling,stakeholder management,data visualization",6,People Analytics Manager,120000,Chicago,MA Organizational Psychology
+C028,Caleb Foster,"C++,embedded systems,Linux admin,Python,sensor integration",7,Embedded Software Engineer,145000,Denver,BS Electrical Engineering
+C029,Ananya Iyer,"SQL,dbt,ETL pipelines,Python programming,data warehousing",5,Data Engineer,135000,Seattle,MS Information Systems
+C030,Victor Alvarez,"Apache Spark,Python,ETL,cloud data platforms,SQL queries",6,Senior Data Engineer,152000,Remote,BS Computer Engineering
+C031,Hannah Green,"quality assurance,Selenium,test automation,Java,API testing",4,QA Automation Engineer,108000,Dallas,BS Computer Science
+C032,Rahul Kapoor,"Salesforce,Apex programming,CRM workflows,JavaScript,stakeholder communication",5,Salesforce Developer,132000,Atlanta,BS Information Technology
+C033,Amelia Scott,"AWS cloud,serverless,Lambda functions,Python coding,Terraform",5,Cloud Developer,140000,Boston,MS Computer Science
+C034,Jonas Berg,"Golang,distributed systems,micro-services,Docker containers,K8s",8,Site Reliability Engineer,168000,Seattle,BS Computer Science
+C035,Sara Mahmoud,"NLP,text analytics,Python,TensorFlow,SQL",4,Data Scientist,125000,New York,MS Data Science
+C036,Miguel Santos,"React.js,Node.js,TypeScript,MongoDB,RESTful services",6,Full-Stack Engineer,145000,Austin,BS Software Engineering
+C037,Emily Nguyen,"product analytics,A/B testing,SQL,Python,data visualization",4,Product Analyst,110000,San Francisco,BS Statistics
+C038,David Brown,"networking,cybersecurity,cloud security,incident management,SIEM",7,Cloud Security Engineer,155000,Washington DC,BS Information Security
+C039,Yara Mansour,"Figma design,user research,prototypes,design systems,HTML/CSS",5,Product Designer,125000,Remote,BDes Communication Design
+C040,Thomas Evans,"Microsoft Azure,CI-CD,Docker,Kubernetes clusters,Terraform",6,DevOps Specialist,148000,Chicago,Azure Certifications
+C041,Kavya Rao,"R,Python programming,statistical modeling,machine-learning,SQL reporting",2,Data Scientist,95000,Boston,MS Biostatistics
+C042,Christopher Hall,"PHP,Laravel,MySQL,JavaScript,API development",5,Web Application Developer,115000,Miami,BS Computer Science
+C043,Natalie King,"technical writing,API documentation,Git,stakeholder communication,software development lifecycle",4,Technical Writer,98000,Remote,BA English
+C044,Ibrahim Diallo,"Postgres,database tuning,SQL Server,data warehousing,Linux",9,Database Engineer,150000,Dallas,BS Computer Science
+C045,Lucy Adams,"Scrum master,Agile methodology,project delivery,risk management,team leadership",7,Scrum Master,130000,Denver,Certified Scrum Professional
+C046,Rohan Desai,"Computer Vision,OpenCV,Deep learning,Python coding,TensorFlow",5,Computer Vision Engineer,150000,San Francisco,MS Robotics
+C047,Madison White,"customer insights,business analytics,Excel spreadsheets,Tableau,SQL",3,Business Analyst,88000,Atlanta,BS Marketing Analytics
+C048,Kenji Sato,"Rust programming,C++,systems programming,Linux,Git version control",6,Systems Engineer,152000,Seattle,BS Computer Engineering
+C049,Abigail Moore,"React Native,JavaScript,mobile apps,TypeScript,REST APIs",3,Mobile App Developer,112000,Portland,BS Computer Science
+C050,Yusuf Ali,"data pipelines,Apache Spark,Python,Amazon Web Services,PostgreSQL",7,Data Platform Engineer,158000,Remote,MS Data Engineering
