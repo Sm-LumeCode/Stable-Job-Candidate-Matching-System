@@ -18,10 +18,12 @@ import DatabaseStatus from "./pages/DatabaseStatus";
 import ExactMatching from "./pages/ExactMatching";
 import Benchmark from "./pages/Benchmark";
 import StableMatching from "./pages/StableMatching";
+import MatchEvaluation from "./pages/MatchEvaluation";
 
 // Recruiter pages
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 import RecruiterJobs from "./pages/RecruiterJobs";
+import RecruiterMatched from "./pages/RecruiterMatched";
 
 // Candidate pages
 import CandidateDashboard from "./pages/CandidateDashboard";
@@ -60,6 +62,7 @@ function AppShell() {
             <Route path="/settings" element={<ProtectedRoute allowedRoles={["admin"]}><Settings /></ProtectedRoute>} />
             <Route path="/matching" element={<ProtectedRoute allowedRoles={["admin"]}><ExactMatching /></ProtectedRoute>} />
             <Route path="/benchmark" element={<ProtectedRoute allowedRoles={["admin"]}><Benchmark /></ProtectedRoute>} />
+            <Route path="/evaluation" element={<ProtectedRoute allowedRoles={["admin"]}><MatchEvaluation /></ProtectedRoute>} />
             <Route path="/stable-matching" element={<ProtectedRoute allowedRoles={["admin"]}><StableMatching /></ProtectedRoute>} />
 
             {/* Recruiter routes */}
@@ -67,7 +70,7 @@ function AppShell() {
             <Route path="/recruiter/jobs" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterJobs /></ProtectedRoute>} />
             <Route path="/recruiter/jobs/new" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterJobs /></ProtectedRoute>} />
             <Route path="/recruiter/applicants" element={<ProtectedRoute allowedRoles={["recruiter"]}><PlaceholderPage title="Applicants" description="Applicant tracking coming in the next phase." /></ProtectedRoute>} />
-            <Route path="/recruiter/matched" element={<ProtectedRoute allowedRoles={["recruiter"]}><PlaceholderPage title="Matched Candidates" description="Candidate matching results will appear here after the Boyer–Moore–Horspool engine is integrated." /></ProtectedRoute>} />
+            <Route path="/recruiter/matched" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterMatched /></ProtectedRoute>} />
 
             {/* Candidate routes */}
             <Route path="/candidate" element={<ProtectedRoute allowedRoles={["candidate"]}><CandidateDashboard /></ProtectedRoute>} />

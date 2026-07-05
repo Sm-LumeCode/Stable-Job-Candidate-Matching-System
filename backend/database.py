@@ -53,4 +53,17 @@ def initialize_database():
             if "ai_extraction_metadata" not in columns:
                 conn.execute(text("ALTER TABLE candidates ADD COLUMN ai_extraction_metadata TEXT DEFAULT '[]'"))
 
+    # Seed default score weights if none exist
+    with SessionLocal() as session:
+        from models.score_weights import ScoreWeights
+        if session.query(ScoreWeights).count() == 0:
+            default_weights = ScoreWeights(
+                exact_match=0.40,
+                dp_similarity=0.30,
+                experience=0.15,
+                salary=0.10,
+                location=0.05
+            )
+            session.add(default_weights)
+            session.commit()
 

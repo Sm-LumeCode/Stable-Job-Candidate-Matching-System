@@ -29,10 +29,10 @@ const cards = [
     to: "/recruiter/matched",
     icon: Sparkles,
     label: "Matched Candidates",
-    description: "See the best-matched candidates for each of your job postings (coming soon).",
+    description: "See the best-matched candidates for each of your job postings, ranked by combined score.",
     color: "from-violet-500/20 to-violet-600/10",
     iconColor: "text-violet-400",
-    badge: "Coming Soon",
+    badge: "Active",
     badgeColor: "bg-violet-500/10 text-violet-400",
   },
 ];

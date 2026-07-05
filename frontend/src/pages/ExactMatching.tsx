@@ -176,6 +176,59 @@ function BmhVisualizer({ text, pattern }: { text: string; pattern: string }) {
   );
 }
 
+function ExplainPanel({ candidateId, jobId }: { candidateId: string, jobId: string }) {
+  const [data, setData] = useState<any>(null);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const fetchExplain = async () => {
+    if (open) {
+      setOpen(false);
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await getData<any>(`/matching/explain/${candidateId}/${jobId}`);
+      setData(res);
+      setOpen(true);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="mt-6 border-t border-slate-700/50 pt-4">
+      <button onClick={fetchExplain} className="text-xs text-blue-400 hover:text-blue-300 underline font-medium">
+        {open ? "Hide Combined Score Breakdown" : "Explain Combined Score Breakdown"}
+      </button>
+      {loading && <span className="ml-2 text-xs text-slate-500">Loading...</span>}
+      {open && data && (
+        <div className="mt-4 p-4 border border-slate-700 bg-slate-800/50 rounded-xl space-y-4">
+           {Object.keys(data).map(key => {
+             const val = data[key];
+             const raw = val.raw_score;
+             const weight = val.weight;
+             const contrib = val.contribution;
+             return (
+               <div key={key}>
+                 <div className="flex justify-between text-xs text-slate-300 mb-1">
+                   <span className="capitalize">{key.replace("_", " ")} (Weight: {(weight * 100).toFixed(0)}%)</span>
+                   <span>Score: {raw.toFixed(2)} → <span className="text-emerald-400">Contributes: +{contrib.toFixed(3)}</span></span>
+                 </div>
+                 <div className="w-full bg-slate-900 rounded-full h-1.5">
+                   <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${Math.min(100, raw * 100)}%` }}></div>
+                 </div>
+               </div>
+             )
+           })}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function ExactMatching() {
   const [candidates, setCandidates] = useState<any[]>([]);
   const [jobs, setJobs] = useState<any[]>([]);
@@ -293,6 +346,7 @@ export default function ExactMatching() {
             </div>
           </div>
           <p className="mt-4 text-xs text-slate-500">Click on any skill above to visualize the BMH algorithm searching for it in the candidate's skill list.</p>
+          <ExplainPanel candidateId={selectedCandidate.candidate_id} jobId={selectedJob.job_id} />
         </Card>
       )}
 

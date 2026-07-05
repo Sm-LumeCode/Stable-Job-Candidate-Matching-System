@@ -13,6 +13,7 @@ const ADMIN_LINKS = [
   ["/matching", "Exact Matching", Sparkles],
   ["/benchmark", "BMH Benchmark", Database],
   ["/stable-matching", "Stable Matching", Sparkles],
+  ["/evaluation", "Match Evaluation", Sparkles],
   ["/database", "Database", Database],
   ["/settings", "Settings", Settings],
 ] as const;

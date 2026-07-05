@@ -6,5 +6,6 @@ from .stable_match_result import StableMatchingResult
 from .skill_taxonomy import SkillTaxonomy
 from .user import User
 from .settings import AppSettings
+from .score_weights import ScoreWeights
 
-__all__ = ["Candidate", "Job", "SkillTaxonomy", "ExactMatchResult", "StableMatchingResult", "BenchmarkResult", "User", "AppSettings"]
+__all__ = ["Candidate", "Job", "SkillTaxonomy", "ExactMatchResult", "StableMatchingResult", "BenchmarkResult", "User", "AppSettings", "ScoreWeights"]
