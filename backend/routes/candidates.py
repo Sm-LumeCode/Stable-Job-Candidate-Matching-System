@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from database import get_db
 from models import Candidate
@@ -6,6 +6,7 @@ from models.user import User
 from schemas import CandidatePayload, CandidateResponse
 from auth import require_admin_or_recruiter, require_admin, get_current_user
 from services.preprocessing import normalize_skills
+from services.matching_trigger import trigger_background_matching
 
 router = APIRouter(prefix="/candidates", tags=["candidates"])
 
@@ -38,19 +39,14 @@ def get_candidate(
 @router.post("", response_model=CandidateResponse, status_code=201)
 def create_candidate(
     payload: CandidatePayload,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
     """Any authenticated user can create a candidate (typically Candidate role via Resume Upload)."""
-    if payload.email and db.query(Candidate).filter(Candidate.email == payload.email).first():
+    if db.query(Candidate).filter(Candidate.email == payload.email).first():
         raise HTTPException(409, "A candidate with this email already exists")
     normalized_name = payload.name.strip().lower()
-    duplicate = db.query(Candidate).filter(
-        Candidate.name.ilike(normalized_name),
-        Candidate.phone == payload.phone,
-    ).first() if payload.phone else None
-    if duplicate:
-        raise HTTPException(409, "This candidate appears to already exist")
     last = db.query(Candidate).order_by(Candidate.id.desc()).first()
     candidate_id = f"C{((last.id if last else 0) + 1):03d}"
 
@@ -60,10 +56,11 @@ def create_candidate(
     data["skills"] = original_skills
     data["normalized_skills"] = normalized
 
-    candidate = Candidate(candidate_id=candidate_id, **data)
+    candidate = Candidate(candidate_id=candidate_id, user_id=current_user.id, **data)
     db.add(candidate)
     db.commit()
     db.refresh(candidate)
+    background_tasks.add_task(trigger_background_matching)
     return candidate
 
 
@@ -71,6 +68,7 @@ def create_candidate(
 def update_candidate(
     candidate_db_id: int,
     payload: CandidatePayload,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -90,4 +88,5 @@ def update_candidate(
         setattr(candidate, key, value)
     db.commit()
     db.refresh(candidate)
+    background_tasks.add_task(trigger_background_matching)
     return candidate

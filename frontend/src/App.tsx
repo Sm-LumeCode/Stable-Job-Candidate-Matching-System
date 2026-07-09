@@ -24,12 +24,16 @@ import MatchEvaluation from "./pages/MatchEvaluation";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 import RecruiterJobs from "./pages/RecruiterJobs";
 import RecruiterMatched from "./pages/RecruiterMatched";
+import JobFinalResults from "./pages/JobFinalResults";
 
 // Candidate pages
 import CandidateDashboard from "./pages/CandidateDashboard";
 import ResumeUpload from "./pages/ResumeUpload";
 import CandidateProfile from "./pages/CandidateProfile";
 import CandidateResults from "./pages/CandidateResults";
+import CandidateJobs from "./pages/CandidateJobs";
+import CandidatePreferences from "./pages/CandidatePreferences";
+import RecruiterApplicants from "./pages/RecruiterApplicants";
 
 function AppShell() {
   const [open, setOpen] = useState(false);
@@ -69,13 +73,16 @@ function AppShell() {
             <Route path="/recruiter" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterDashboard /></ProtectedRoute>} />
             <Route path="/recruiter/jobs" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterJobs /></ProtectedRoute>} />
             <Route path="/recruiter/jobs/new" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterJobs /></ProtectedRoute>} />
-            <Route path="/recruiter/applicants" element={<ProtectedRoute allowedRoles={["recruiter"]}><PlaceholderPage title="Applicants" description="Applicant tracking coming in the next phase." /></ProtectedRoute>} />
+            <Route path="/recruiter/applicants" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterApplicants /></ProtectedRoute>} />
             <Route path="/recruiter/matched" element={<ProtectedRoute allowedRoles={["recruiter"]}><RecruiterMatched /></ProtectedRoute>} />
+            <Route path="/jobs/:id/results" element={<ProtectedRoute allowedRoles={["admin", "recruiter"]}><JobFinalResults /></ProtectedRoute>} />
 
             {/* Candidate routes */}
             <Route path="/candidate" element={<ProtectedRoute allowedRoles={["candidate"]}><CandidateDashboard /></ProtectedRoute>} />
             <Route path="/candidate/resume" element={<ProtectedRoute allowedRoles={["candidate"]}><ResumeUpload /></ProtectedRoute>} />
             <Route path="/candidate/profile" element={<ProtectedRoute allowedRoles={["candidate"]}><CandidateProfile /></ProtectedRoute>} />
+            <Route path="/candidate/jobs" element={<ProtectedRoute allowedRoles={["candidate"]}><CandidateJobs /></ProtectedRoute>} />
+            <Route path="/candidate/preferences" element={<ProtectedRoute allowedRoles={["candidate"]}><CandidatePreferences /></ProtectedRoute>} />
             <Route path="/candidate/results" element={<ProtectedRoute allowedRoles={["candidate"]}><CandidateResults /></ProtectedRoute>} />
 
             {/* Catch-all */}

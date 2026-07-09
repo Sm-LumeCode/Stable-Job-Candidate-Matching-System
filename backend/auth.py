@@ -118,12 +118,28 @@ require_any_role = _role_guard("admin", "recruiter", "candidate")
 # ---------------------------------------------------------------------------
 
 def seed_admin(db: Session) -> None:
-    """Create the admin account on first startup if it does not exist."""
-    existing = db.query(User).filter(User.username == ADMIN_USERNAME).first()
+    """Create or repair the admin account on startup."""
+    # First: fix any existing admin row that has a blank email (legacy migration artifact)
+    stale = db.query(User).filter(User.role == "admin", User.email == "").first()
+    if stale:
+        # Check if a proper admin already exists separately
+        proper = db.query(User).filter(User.email == "admin@stablehire.com").first()
+        if proper:
+            # Two admin rows — remove the stale blank one
+            db.delete(stale)
+        else:
+            # Patch the blank one with the correct email
+            stale.email = "admin@stablehire.com"
+            stale.username = "Admin"
+        db.commit()
+        print("[StableHire] Admin account email repaired.")
+        return
+
+    existing = db.query(User).filter(User.email == "admin@stablehire.com").first()
     if not existing:
         admin = User(
-            username=ADMIN_USERNAME,
-            email=None,
+            username="Admin",
+            email="admin@stablehire.com",
             hashed_password=hash_password(ADMIN_PASSWORD),
             role="admin",
         )

@@ -5,6 +5,11 @@ from database import get_db
 from models.stable_match_result import StableMatchingResult
 from schemas import StableMatchingPayload
 from services.gale_shapley import validate_preferences, run_gale_shapley, check_stability
+from auth import get_current_user
+from models.user import User
+from routes.settings import get_app_settings
+from models.job import Job
+from models.candidate import Candidate
 
 router = APIRouter(prefix="/matching/stable", tags=["stable-matching"])
 
@@ -77,8 +82,11 @@ def execute_stable_matching(payload: StableMatchingPayload, db: Session = Depend
     return result
 
 @router.get("/results")
-def get_stable_matching_results(db: Session = Depends(get_db)):
+def get_stable_matching_results(current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     """Returns the latest persisted stable matching results."""
+    settings = get_app_settings(db)
+    status = settings.recruitment_status
+    
     results = db.query(StableMatchingResult).all()
     # Decode JSON history
     out = []
@@ -91,5 +99,25 @@ def get_stable_matching_results(db: Session = Depends(get_db)):
             "execution_time_ms": r.execution_time_ms,
             "history": json.loads(r.proposal_history) if r.proposal_history else []
         }
-        out.append(data)
+        
+        if current_user.role == "admin":
+            out.append(data)
+            continue
+            
+        if status == "OPEN":
+            continue # Non-admins see nothing while OPEN
+            
+        if current_user.role == "recruiter":
+            if r.assigned_job_id:
+                job = db.query(Job).filter(Job.job_id == r.assigned_job_id).first()
+                if job and job.recruiter_id == current_user.id:
+                    out.append(data)
+            continue
+            
+        if current_user.role == "candidate":
+            candidate = db.query(Candidate).filter(Candidate.email == current_user.email).first()
+            if candidate and r.candidate_id == candidate.candidate_id:
+                out.append(data)
+            continue
+            
     return out

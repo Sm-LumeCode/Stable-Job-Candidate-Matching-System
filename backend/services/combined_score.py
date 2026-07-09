@@ -32,46 +32,33 @@ def compute_combined_score(candidate: Candidate, job: Job, weights: Dict[str, fl
     # 3. Experience
     cand_exp = candidate.experience_years or 0.0
     job_exp = job.min_experience_years or 0.0
-    if job_exp <= 0:
-        experience = 1.0 if cand_exp >= 0 else 0.0
+    if job_exp <= 0 or cand_exp >= job_exp:
+        experience = 1.0
     else:
-        experience = max(0.0, 1.0 - min(abs(cand_exp - job_exp) / job_exp, 1.0))
+        experience = cand_exp / job_exp
         
-    # 4. Salary
-    cand_sal = candidate.desired_salary or 0.0
-    job_sal = job.offered_salary or 0.0
-    if job_sal <= 0:
-        salary = 1.0
-    elif cand_sal <= job_sal:
-        salary = 1.0
+    # 4. Education
+    education_str = (candidate.education or "").lower()
+    if not education_str:
+        education = 0.0
     else:
-        salary = max(0.0, 1.0 - (cand_sal - job_sal) / job_sal)
-        
-    # 5. Location
-    cand_loc = (candidate.preferred_location or "").lower().strip()
-    job_loc = (job.location or "").lower().strip()
-    
-    if cand_loc == job_loc and cand_loc != "":
-        location = 1.0
-    elif cand_loc == "" and job_loc == "":
-        location = 1.0
-    elif "remote" in cand_loc or "remote" in job_loc:
-        location = 0.5
-    else:
-        location = 0.0
-        
-    w_em = weights.get("exact_match", 0.40)
-    w_dp = weights.get("dp_similarity", 0.30)
-    w_ex = weights.get("experience", 0.15)
-    w_sa = weights.get("salary", 0.10)
-    w_lo = weights.get("location", 0.05)
+        relevant_keywords = ["computer science", "ai", "artificial intelligence", "data science", "information science", "software engineering"]
+        if any(kw in education_str for kw in relevant_keywords):
+            education = 1.0
+        else:
+            education = 0.5
+            
+    # Fixed weights ignoring the db parameters
+    w_em = 0.50
+    w_dp = 0.35
+    w_ex = 0.10
+    w_ed = 0.05
     
     total = (
         exact_match * w_em +
         dp_similarity * w_dp +
         experience * w_ex +
-        salary * w_sa +
-        location * w_lo
+        education * w_ed
     )
     
     return {
@@ -80,7 +67,6 @@ def compute_combined_score(candidate: Candidate, job: Job, weights: Dict[str, fl
             "exact_match": {"score": round(exact_match, 4), "weight": w_em, "contribution": round(exact_match * w_em, 4)},
             "dp_similarity": {"score": round(dp_similarity, 4), "weight": w_dp, "contribution": round(dp_similarity * w_dp, 4)},
             "experience": {"score": round(experience, 4), "weight": w_ex, "contribution": round(experience * w_ex, 4)},
-            "salary": {"score": round(salary, 4), "weight": w_sa, "contribution": round(salary * w_sa, 4)},
-            "location": {"score": round(location, 4), "weight": w_lo, "contribution": round(location * w_lo, 4)}
+            "education": {"score": round(education, 4), "weight": w_ed, "contribution": round(education * w_ed, 4)}
         }
     }

@@ -19,5 +19,6 @@ class Job(Base):
     capacity: Mapped[int] = mapped_column(Integer, default=1)
     description: Mapped[str] = mapped_column(Text, default="")
     recruiter_id: Mapped[int | None] = mapped_column(Integer, nullable=True, index=True)  # owner recruiter user id
+    status: Mapped[str] = mapped_column(String(20), default="OPEN")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 

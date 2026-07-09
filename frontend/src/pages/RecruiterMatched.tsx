@@ -36,8 +36,7 @@ function ExplainPanel({ candidateId, jobId }: { candidateId: string; jobId: stri
     exact_match: "bg-blue-500",
     dp_similarity: "bg-violet-500",
     experience: "bg-emerald-500",
-    salary: "bg-amber-500",
-    location: "bg-rose-500",
+    education: "bg-teal-500",
   };
 
   return (
@@ -227,12 +226,15 @@ export default function RecruiterMatched() {
   const { user } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [recruitmentStatus, setRecruitmentStatus] = useState("OPEN");
 
   useEffect(() => {
-    getData<Job[]>("/jobs")
-      .then(all => {
-        // Filter to jobs belonging to the logged-in recruiter (same ownership
-        // pattern as RecruiterJobs — recruiter_id matches user.user_id)
+    Promise.all([
+      getData<Job[]>("/jobs"),
+      getData<{status: string}>("/settings/status")
+    ])
+      .then(([all, statusRes]) => {
+        setRecruitmentStatus(statusRes.status);
         const mine = all.filter(j => j.recruiter_id === user?.user_id);
         setJobs(mine);
       })
@@ -259,6 +261,16 @@ export default function RecruiterMatched() {
           <h2 className="text-xl font-semibold text-white">No Jobs Posted Yet</h2>
           <p className="mt-3 max-w-sm text-sm text-slate-400">
             Post your first job from the <strong>My Jobs</strong> section, then return here to see ranked candidates.
+          </p>
+        </Card>
+      ) : recruitmentStatus === "OPEN" ? (
+        <Card className="flex flex-col items-center py-20 text-center">
+          <div className="mb-5 grid h-20 w-20 place-items-center rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/10">
+            <UserRound size={36} className="text-blue-400" />
+          </div>
+          <h2 className="text-xl font-semibold text-white">Recruitment Status: OPEN</h2>
+          <p className="mt-3 max-w-sm text-sm text-slate-400">
+            The recruitment cycle is currently open. Candidate allocations are kept hidden while matching runs continuously in the background. Check back when the Admin closes the cycle.
           </p>
         </Card>
       ) : (

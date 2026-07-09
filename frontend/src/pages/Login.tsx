@@ -15,7 +15,7 @@ export default function Login() {
   const { login } = useAuth();
 
   const [role, setRole] = useState<UserRole>("candidate");
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -40,7 +40,7 @@ export default function Login() {
     e.preventDefault();
     setBusy(true); setError("");
     try {
-      await login(username.trim(), password, role);
+      await login(email.trim(), password, role);
       navigate(roleHome(role), { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
@@ -55,12 +55,12 @@ export default function Login() {
       const res = await fetch("http://localhost:8000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username: regUsername.trim(), email: regEmail || undefined, password: regPassword, role }),
+        body: JSON.stringify({ username: regUsername.trim(), email: regEmail.trim(), password: regPassword, role }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.detail || "Registration failed");
-      setRegSuccess(`Account created! You can now log in as ${regUsername}.`);
-      setTab("login"); setUsername(regUsername);
+      setRegSuccess(`Account created! You can now log in with ${regEmail}.`);
+      setTab("login"); setEmail(regEmail);
     } catch (err) {
       setRegError(err instanceof Error ? err.message : "Registration failed");
     } finally { setRegBusy(false); }
@@ -130,13 +130,14 @@ export default function Login() {
                 <div className="rounded-lg bg-emerald-500/10 border border-emerald-500/20 p-3 text-xs text-emerald-400">{regSuccess}</div>
               )}
               <div>
-                <label className="mb-1.5 block text-xs text-slate-400">Username</label>
+                <label className="mb-1.5 block text-xs text-slate-400">Email</label>
                 <input
                   className="input"
-                  autoComplete="username"
-                  placeholder="Enter your username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  type="email"
+                  autoComplete="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -181,8 +182,8 @@ export default function Login() {
                 <input className="input" placeholder="Choose a username" value={regUsername} onChange={(e) => setRegUsername(e.target.value)} required />
               </div>
               <div>
-                <label className="mb-1.5 block text-xs text-slate-400">Email (optional)</label>
-                <input className="input" type="email" placeholder="your@email.com" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} />
+                <label className="mb-1.5 block text-xs text-slate-400">Email</label>
+                <input className="input" type="email" placeholder="your@email.com" value={regEmail} onChange={(e) => setRegEmail(e.target.value)} required />
               </div>
               <div>
                 <label className="mb-1.5 block text-xs text-slate-400">Password</label>

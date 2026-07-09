@@ -49,7 +49,18 @@ export async function request<T>(path: string, options?: RequestInit): Promise<T
     ),
   });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) throw new Error(data.detail || "Request failed");
+  if (!response.ok) {
+    // FastAPI 422 returns detail as an array of validation error objects
+    let msg: string;
+    if (Array.isArray(data.detail)) {
+      msg = data.detail.map((d: { msg?: string; loc?: string[] }) =>
+        d.msg ? `${d.loc?.slice(1).join(" → ") ?? "field"}: ${d.msg}` : JSON.stringify(d)
+      ).join("; ");
+    } else {
+      msg = data.detail || "Request failed";
+    }
+    throw new Error(msg);
+  }
   return data;
 }
 

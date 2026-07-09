@@ -28,6 +28,7 @@ def database_status(
         "total_skills": db.query(func.count(SkillTaxonomy.id)).scalar() or 0,
         "total_candidates": db.query(func.count(Candidate.id)).scalar() or 0,
         "setup_complete": total_jobs > 0 and (db.query(func.count(SkillTaxonomy.id)).scalar() or 0) > 0,
+        "closed_jobs": db.query(func.count(Job.id)).filter(Job.status == "CLOSED").scalar() or 0,
     }
 
 

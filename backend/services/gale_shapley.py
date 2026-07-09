@@ -1,5 +1,5 @@
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 from schemas import StableMatchingPayload
 
 def validate_preferences(payload: StableMatchingPayload) -> tuple[bool, str]:
@@ -43,7 +43,7 @@ def run_gale_shapley(payload: StableMatchingPayload) -> dict:
     cand_prefs = {c.candidate_id: c.preferences for c in payload.candidates}
     
     # State tracking
-    free_candidates = [c.candidate_id for c in payload.candidates]
+    free_candidates: deque[str] = deque(c.candidate_id for c in payload.candidates)
     cand_next_proposal = {c: 0 for c in free_candidates} # Index of next job to propose to
     
     # job_assignments[job_id] = [candidate_id1, candidate_id2, ...]
@@ -57,7 +57,7 @@ def run_gale_shapley(payload: StableMatchingPayload) -> dict:
     replacements_count = 0
     
     while free_candidates:
-        c = free_candidates.pop(0)
+        c = free_candidates.popleft()
         
         # Candidate has proposed to everyone they want to?
         if cand_next_proposal[c] >= len(cand_prefs[c]):
@@ -72,7 +72,7 @@ def run_gale_shapley(payload: StableMatchingPayload) -> dict:
         if c not in job_rankings[j]:
             rejections_count += 1
             history.append({"type": "reject", "candidate": c, "job": j, "reason": "Not on job preference list"})
-            free_candidates.append(c)
+            free_candidates.appendleft(c)
             continue
             
         current_assigned = job_assignments[j]
@@ -99,14 +99,14 @@ def run_gale_shapley(payload: StableMatchingPayload) -> dict:
                 # Job prefers current assignments
                 rejections_count += 1
                 history.append({"type": "reject", "candidate": c, "job": j, "reason": "Job is full and prefers existing assignments"})
-                free_candidates.append(c)
+                free_candidates.appendleft(c)
                 
     end_time = time.perf_counter()
     exec_time_ms = (end_time - start_time) * 1000
     
     # Format matches
     matches = []
-    unmatched_candidates = [c.candidate_id for c in payload.candidates]
+    matched_candidates: set[str] = set()
     for j, assigned in job_assignments.items():
         for c in assigned:
             c_rank = cand_prefs[c].index(j) + 1
@@ -117,8 +117,9 @@ def run_gale_shapley(payload: StableMatchingPayload) -> dict:
                 "candidate_rank": c_rank, # The rank of this job in candidate's list
                 "job_rank": j_rank        # The rank of this candidate in job's list
             })
-            if c in unmatched_candidates:
-                unmatched_candidates.remove(c)
+            matched_candidates.add(c)
+
+    unmatched_candidates = [c.candidate_id for c in payload.candidates if c.candidate_id not in matched_candidates]
                 
     return {
         "matches": matches,

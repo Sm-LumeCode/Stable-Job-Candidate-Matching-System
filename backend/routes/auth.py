@@ -27,14 +27,14 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 # ---------------------------------------------------------------------------
 
 class LoginPayload(BaseModel):
-    username: str = Field(min_length=1)
+    email: str = Field(min_length=1)
     password: str = Field(min_length=1)
     role: str = Field(min_length=1)  # expected role from the selector
 
 
 class RegisterPayload(BaseModel):
     username: str = Field(min_length=3, max_length=80)
-    email: str | None = None
+    email: str = Field(min_length=3)
     password: str = Field(min_length=6, max_length=128)
     role: str  # "recruiter" | "candidate"
 
@@ -44,13 +44,14 @@ class TokenResponse(BaseModel):
     token_type: str = "bearer"
     role: str
     username: str
+    email: str
     user_id: int
 
 
 class UserResponse(BaseModel):
     id: int
     username: str
-    email: str | None
+    email: str
     role: str
 
 
@@ -60,9 +61,9 @@ class UserResponse(BaseModel):
 
 @router.post("/login", response_model=TokenResponse)
 def login(payload: LoginPayload, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.username == payload.username).first()
+    user = db.query(User).filter(User.email == payload.email).first()
     if not user or not verify_password(payload.password, user.hashed_password):
-        raise HTTPException(401, "Invalid username or password")
+        raise HTTPException(401, "Invalid email or password")
     # Ensure the user is actually in the role they selected
     if user.role != payload.role:
         raise HTTPException(403, f"This account is not registered as a {payload.role}")
@@ -71,6 +72,7 @@ def login(payload: LoginPayload, db: Session = Depends(get_db)):
         access_token=token,
         role=user.role,
         username=user.username,
+        email=user.email,
         user_id=user.id,
     )
 
@@ -79,13 +81,11 @@ def login(payload: LoginPayload, db: Session = Depends(get_db)):
 def register(payload: RegisterPayload, db: Session = Depends(get_db)):
     if payload.role not in ("recruiter", "candidate"):
         raise HTTPException(400, "Self-registration is only allowed for recruiter or candidate roles")
-    if db.query(User).filter(User.username == payload.username).first():
-        raise HTTPException(409, "Username already taken")
-    if payload.email and db.query(User).filter(User.email == payload.email).first():
+    if db.query(User).filter(User.email == payload.email).first():
         raise HTTPException(409, "Email already registered")
     user = User(
         username=payload.username,
-        email=payload.email or None,
+        email=payload.email,
         hashed_password=hash_password(payload.password),
         role=payload.role,
     )
@@ -97,6 +97,7 @@ def register(payload: RegisterPayload, db: Session = Depends(get_db)):
         access_token=token,
         role=user.role,
         username=user.username,
+        email=user.email,
         user_id=user.id,
     )
 

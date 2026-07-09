@@ -5,6 +5,7 @@ export type UserRole = "admin" | "recruiter" | "candidate";
 export interface AuthUser {
   user_id: number;
   username: string;
+  email: string;
   role: UserRole;
   access_token: string;
 }
@@ -40,11 +41,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = async (username: string, password: string, role: UserRole) => {
+  const login = async (email: string, password: string, role: UserRole) => {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password, role }),
+      body: JSON.stringify({ email, password, role }),
     });
     const data = await response.json();
     if (!response.ok) {
@@ -53,6 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const authUser: AuthUser = {
       user_id: data.user_id,
       username: data.username,
+      email: data.email,
       role: data.role as UserRole,
       access_token: data.access_token,
     };

@@ -28,6 +28,8 @@ export interface AppSettings {
   ai_parsing_enabled: boolean;
   groq_model: string;
   api_key_configured: boolean;
+  recruitment_status: string;
+  application_threshold?: number;
 }
 
 export interface Job {
@@ -42,6 +44,7 @@ export interface Job {
   location: string;
   capacity: number;
   description: string;
+  status?: string;
   recruiter_id?: number;
 }
 
@@ -60,4 +63,26 @@ export interface DatabaseStatus {
   total_skills: number;
   total_candidates: number;
   setup_complete: boolean;
+  closed_jobs: number;
+}
+
+export type ApplicationStatus = "auto_applied" | "manually_applied" | "cancelled" | "not_applied";
+
+export interface JobWithApplication {
+  job_id: string;
+  job_title: string;
+  company_name: string;
+  location: string;
+  required_skills: string;
+  min_experience_years: number;
+  offered_salary?: number;
+  compatibility_score: number;
+  status: ApplicationStatus;
+  preference_order: number | null;
+}
+
+export interface ApplicationsResponse {
+  candidate_id: string;
+  threshold: number;
+  jobs: JobWithApplication[];
 }

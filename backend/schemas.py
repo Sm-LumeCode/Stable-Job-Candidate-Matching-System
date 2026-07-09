@@ -17,8 +17,17 @@ class JobResponse(JobPayload):
     id: int
     normalized_required_skills: str = ""
     recruiter_id: int | None = None
+    status: str = "OPEN"
     model_config = ConfigDict(from_attributes=True)
 
+
+class NotificationResponse(BaseModel):
+    id: int
+    user_identifier: str
+    message: str
+    is_read: bool
+    type: str
+    model_config = ConfigDict(from_attributes=True)
 
 class SkillPayload(BaseModel):
     skill_term: str = Field(min_length=1, max_length=180)
@@ -33,7 +42,7 @@ class SkillResponse(SkillPayload):
 
 class CandidatePayload(BaseModel):
     name: str = Field(min_length=2, max_length=150)
-    email: str | None = None
+    email: str
     phone: str | None = None
     skills: str = ""
     experience_years: float = Field(default=0, ge=0, le=60)
@@ -44,7 +53,7 @@ class CandidatePayload(BaseModel):
     resume_filename: str | None = None
     resume_text: str = ""
 
-    @field_validator("email", "phone", mode="before")
+    @field_validator("phone", mode="before")
     @classmethod
     def empty_to_none(cls, value):
         return value or None
@@ -63,7 +72,20 @@ class SettingsResponse(BaseModel):
     ai_parsing_enabled: bool
     groq_model: str
     api_key_configured: bool
+    recruitment_status: str
+    application_threshold: float = 0.70
     model_config = ConfigDict(from_attributes=True)
+
+
+class CandidateApplicationResponse(BaseModel):
+    id: int
+    candidate_id: str
+    job_id: str
+    status: str  # auto_applied | manually_applied | cancelled
+    compatibility_score: float
+    preference_order: int | None = None
+    model_config = ConfigDict(from_attributes=True)
+
 
 
 class CandidatePreference(BaseModel):

@@ -29,7 +29,9 @@ const CANDIDATE_LINKS = [
   ["/candidate", "Dashboard", Gauge],
   ["/candidate/resume", "Upload Resume", UploadCloud],
   ["/candidate/profile", "My Profile", UserRound],
-  ["/candidate/results", "My Results", Trophy],
+  ["/candidate/preferences", "My Preferences", Trophy],
+  ["/candidate/jobs", "Job Matches", BriefcaseBusiness],
+  ["/candidate/results", "My Results", Sparkles],
 ] as const;
 
 function getLinks(role: UserRole) {

@@ -41,14 +41,22 @@ export default function RecruiterJobs() {
     if (!editing) return;
     setBusy(true); setError("");
     try {
+      // Strip server-managed fields — backend JobPayload does not accept them
+      const { id, recruiter_id, normalized_required_skills, ...payload } = editing as Job;
       if (isNew) {
-        await request("/jobs", { method: "POST", body: JSON.stringify(editing) });
+        await request("/jobs", { method: "POST", body: JSON.stringify(payload) });
       } else {
-        await request(`/jobs/${editing.id}`, { method: "PUT", body: JSON.stringify(editing) });
+        await request(`/jobs/${id}`, { method: "PUT", body: JSON.stringify(payload) });
       }
       setEditing(null); load();
-    } catch (e) { setError(e instanceof Error ? e.message : "Save failed"); }
-    finally { setBusy(false); }
+    } catch (e) {
+      // FastAPI 422 returns detail as an array of validation errors
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("Save failed");
+      }
+    } finally { setBusy(false); }
   };
 
   const remove = async (job: Job) => {
@@ -69,41 +77,113 @@ export default function RecruiterJobs() {
     </label>
   );
 
-  return (
-    <>
-      <PageHeader
-        title="My Jobs"
-        description="Manage your posted positions. Skills are automatically normalized using the taxonomy."
-        actions={<button className="btn-primary" onClick={openNew}><Plus size={16} /> Post New Job</button>}
-      />
-      <Card className="p-0">
-        <div className="border-b border-slate-800 p-4">
-          <SearchInput value={query} onChange={setQuery} placeholder="Search by title, company, skills, or canonical terms…" />
-        </div>
-        <DataTable headers={["ID / Role", "Company", "Original Skills", "Normalized Skills", "Exp", "Capacity", ""]}>
-          {filtered.length ? filtered.map(j => (
-            <tr key={j.id} className="hover:bg-slate-800/30">
-              <td className="px-5 py-4">
-                <div className="font-medium">{j.title}</div>
-                <div className="text-xs text-slate-500">{j.job_id} · {j.location}</div>
-              </td>
-              <td className="px-5 py-4">{j.company_name}</td>
-              <td className="max-w-48 truncate px-5 py-4 text-slate-400 text-xs">{j.required_skills || "—"}</td>
-              <td className="max-w-48 truncate px-5 py-4 text-emerald-400 text-xs">{j.normalized_required_skills || "—"}</td>
-              <td className="px-5 py-4">{j.min_experience_years}+ yrs</td>
-              <td className="px-5 py-4"><Badge color="emerald">{j.capacity}</Badge></td>
-              <td className="px-5 py-4">
-                <div className="flex gap-3">
-                  <button onClick={() => openEdit(j)} className="text-blue-400"><Pencil size={16} /></button>
-                  <button onClick={() => remove(j)} className="text-red-400"><Trash2 size={16} /></button>
+    const [confirmCloseId, setConfirmCloseId] = useState<number | null>(null);
+
+    const closeRecruitment = async (job: Job) => {
+      setBusy(true); setError("");
+      try {
+        await request(`/jobs/${job.id}/close`, { method: "PUT" });
+        setConfirmCloseId(null);
+        load();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Failed to close recruitment");
+        setBusy(false);
+      }
+    };
+
+    return (
+      <>
+        <PageHeader
+          title="My Jobs"
+          description="Manage your posted positions. Skills are automatically normalized using the taxonomy."
+          actions={<button className="btn-primary" onClick={openNew}><Plus size={16} /> Post New Job</button>}
+        />
+        <Card className="p-0">
+          <div className="border-b border-slate-800 p-4 flex gap-4 items-center flex-wrap justify-between">
+            <div className="flex-1 min-w-[200px]">
+              <SearchInput value={query} onChange={setQuery} placeholder="Search by title, company, skills, or canonical terms…" />
+            </div>
+          </div>
+          <DataTable headers={["ID / Role", "Company", "Original Skills", "Normalized Skills", "Status / Cap", ""]}>
+            {filtered.length ? filtered.map(j => (
+              <tr key={j.id} className="hover:bg-slate-800/30">
+                <td className="px-5 py-4">
+                  <div className="font-medium">{j.title}</div>
+                  <div className="text-xs text-slate-500">{j.job_id} · {j.location}</div>
+                </td>
+                <td className="px-5 py-4">{j.company_name}</td>
+                <td className="max-w-48 truncate px-5 py-4 text-slate-400 text-xs">{j.required_skills || "—"}</td>
+                <td className="max-w-48 truncate px-5 py-4 text-emerald-400 text-xs">{j.normalized_required_skills || "—"}</td>
+                <td className="px-5 py-4 flex flex-col gap-1 items-start">
+                  <Badge color={j.status === "CLOSED" ? "slate" : "emerald"}>{j.status || "OPEN"}</Badge>
+                  <span className="text-xs text-slate-500">Cap: {j.capacity}</span>
+                </td>
+                <td className="px-5 py-4">
+                  <div className="flex flex-col gap-2 items-end">
+                    <div className="flex gap-3">
+                      {(!j.status || j.status !== "CLOSED") && (
+                        <>
+                          <button onClick={() => openEdit(j)} className="text-blue-400 hover:text-blue-300" title="Edit Job"><Pencil size={16} /></button>
+                          <button onClick={() => remove(j)} className="text-red-400 hover:text-red-300" title="Delete Job"><Trash2 size={16} /></button>
+                        </>
+                      )}
+                    </div>
+                    {(!j.status || j.status === "OPEN") ? (
+                      <button 
+                        onClick={() => setConfirmCloseId(j.id!)}
+                        className="text-xs font-semibold text-amber-400 hover:text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 px-2 py-1 rounded"
+                      >
+                        End Recruitment
+                      </button>
+                    ) : (
+                      <button 
+                        onClick={() => window.location.href = `/jobs/${j.id}/results`}
+                        className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded whitespace-nowrap"
+                      >
+                        View Results
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            )) : (
+              <tr><td colSpan={6} className="p-12 text-center text-slate-500">No jobs yet. Post your first job!</td></tr>
+            )}
+          </DataTable>
+        </Card>
+
+        {confirmCloseId && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
+            <div className="w-full max-w-sm rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-xl">
+              <h3 className="mb-3 text-lg font-semibold text-white">End Recruitment?</h3>
+              <p className="mb-6 text-sm text-slate-400">
+                Are you sure you want to close recruitment for this job? No more applications will be accepted.
+              </p>
+              {error && confirmCloseId && (
+                <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-xs text-red-400">
+                  {error}
                 </div>
-              </td>
-            </tr>
-          )) : (
-            <tr><td colSpan={7} className="p-12 text-center text-slate-500">No jobs yet. Post your first job!</td></tr>
-          )}
-        </DataTable>
-      </Card>
+              )}
+              <div className="flex justify-end gap-3">
+                <button 
+                  onClick={() => { setConfirmCloseId(null); setError(""); }} 
+                  className="rounded-lg px-4 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+                  disabled={busy}
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={() => closeRecruitment(items.find(x => x.id === confirmCloseId)!)}
+                  className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
+                  disabled={busy}
+                >
+                  {busy ? "Confirming..." : "Confirm"}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
 
       <DetailDrawer open={!!editing} close={() => setEditing(null)} title={isNew ? "Post New Job" : "Edit Job"}>
         <div className="space-y-4">
@@ -133,7 +213,7 @@ export default function RecruiterJobs() {
             </div>
           )}
           {field("Minimum experience (yrs)", "min_experience_years", "number")}
-          {field("Offered salary ($)", "offered_salary", "number")}
+          {field("Offered salary (LPA ₹)", "offered_salary", "number")}
           {field("Location", "location")}
           {field("Capacity", "capacity", "number")}
           {error && <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-xs text-red-400">{error}</div>}

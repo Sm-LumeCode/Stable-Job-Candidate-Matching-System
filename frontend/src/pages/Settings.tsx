@@ -25,7 +25,7 @@ export default function Settings() {
 
   useEffect(() => { void load(); }, []);
 
-  const toggleAi = async () => {
+    const toggleAi = async () => {
     if (!settings) return;
     const nextState = !settings.ai_parsing_enabled;
     setSaving(true);
@@ -39,6 +39,24 @@ export default function Settings() {
       setMessage("Settings saved successfully.");
     } catch (e) {
       setMessage("Failed to save settings.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const updateThreshold = async (val: number) => {
+    if (!settings) return;
+    setSaving(true);
+    setMessage("");
+    try {
+      await request("/settings", {
+        method: "PUT",
+        body: JSON.stringify({ application_threshold: val }),
+      });
+      setSettings({ ...settings, application_threshold: val });
+      setMessage("Threshold updated.");
+    } catch (e) {
+      setMessage("Failed to update threshold.");
     } finally {
       setSaving(false);
     }
@@ -114,6 +132,38 @@ export default function Settings() {
                 {message}
               </div>
             )}
+          </Card>
+
+          {/* Workflow Settings */}
+          <Card>
+            <div className="mb-6 flex items-center gap-3">
+              <div className="rounded-lg bg-emerald-500/10 p-2 text-emerald-400">
+                <BrainCircuit size={20} />
+              </div>
+              <h2 className="text-lg font-semibold text-white">Workflow Settings</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <label className="mb-1.5 flex items-center justify-between text-xs font-medium text-slate-400 uppercase tracking-widest">
+                  <span>Auto-Apply Threshold</span>
+                  <span className="text-emerald-400 font-bold">{Math.round((settings.application_threshold ?? 0.70) * 100)}%</span>
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  disabled={saving}
+                  value={Math.round((settings.application_threshold ?? 0.70) * 100)}
+                  onChange={(e) => updateThreshold(Number(e.target.value) / 100)}
+                  className="w-full accent-emerald-500"
+                />
+                <p className="mt-2 text-xs text-slate-500">
+                  Jobs scoring above this compatibility percentage will be automatically applied for candidates when they upload their resumes.
+                </p>
+              </div>
+            </div>
           </Card>
         </div>
       ) : (
